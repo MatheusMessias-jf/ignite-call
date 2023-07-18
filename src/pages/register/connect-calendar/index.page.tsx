@@ -5,7 +5,7 @@ import { AuthError, ConnectBox, ConnectItem } from './styles'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
-export default function Register() {
+export default function ConnectCalendar() {
   const router = useRouter()
   const session = useSession()
 
@@ -14,6 +14,10 @@ export default function Register() {
 
   async function handleConnectCalendar() {
     await signIn('google')
+  }
+
+  async function handleNavigateToNextStep() {
+    await router.push('/register/time-intervals')
   }
   return (
     <Container>
@@ -54,7 +58,7 @@ export default function Register() {
           </AuthError>
         )}
 
-        <Button type="submit" disabled={!isSignedIn}>
+        <Button onClick={handleNavigateToNextStep} type="submit" disabled={!isSignedIn}>
           Próximo passo
           <ArrowRight />
         </Button>
