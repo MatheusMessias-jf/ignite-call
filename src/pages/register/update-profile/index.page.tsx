@@ -1,4 +1,11 @@
-import { Avatar, Button, Heading, MultiStep, Text, TextArea, TextInput } from '@ignite-ui/react'
+import {
+  Avatar,
+  Button,
+  Heading,
+  MultiStep,
+  Text,
+  TextArea,
+} from '@ignite-ui/react'
 import { ArrowRight } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -38,11 +45,6 @@ export default function UpdateProfile() {
     await router.push(`/schedule/${session.data?.user.username}`)
   }
 
-
-
-  console.log(session);
-
-
   return (
     <Container>
       <Header>
@@ -64,7 +66,7 @@ export default function UpdateProfile() {
         <label>
           <Text size="sm">Sobre você</Text>
           <TextArea {...register('bio')} />
-          <FormAnnotation size='sm'>
+          <FormAnnotation size="sm">
             Fale um pouco sobre você. Isto será exibido em sua página pessoal.
           </FormAnnotation>
         </label>
@@ -79,11 +81,15 @@ export default function UpdateProfile() {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const session = await getServerSession(req, res, buildNextAuthOptions(req, res))
+  const session = await getServerSession(
+    req,
+    res,
+    buildNextAuthOptions(req, res),
+  )
 
   return {
     props: {
       session,
-    }
+    },
   }
 }

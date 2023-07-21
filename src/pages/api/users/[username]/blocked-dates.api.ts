@@ -1,7 +1,6 @@
-import { NextApiRequest, NextApiResponse } from "next"
+import { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '../../../../lib/prisma'
-import dayjs from "dayjs"
- 
+
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -11,20 +10,20 @@ export default async function handle(
   }
 
   const username = String(req.query.username)
-  const  { year, month } = req.query
+  const { year, month } = req.query
 
-  if(!year || !month) {
+  if (!year || !month) {
     return res.status(400).json({ message: 'Year or month not specified' })
   }
 
   const user = await prisma.user.findUnique({
     where: {
       username,
-    }
+    },
   })
 
-  if(!user) {
-    return res.status(400).json({ message: 'User does not exist' })   
+  if (!user) {
+    return res.status(400).json({ message: 'User does not exist' })
   }
 
   const availableWeekDays = await prisma.userTimeInterval.findMany({
@@ -36,7 +35,7 @@ export default async function handle(
     },
   })
 
-  const blockedWeekDays = [0, 1, 2, 3, 4, 5, 6].filter(weekday => {
+  const blockedWeekDays = [0, 1, 2, 3, 4, 5, 6].filter((weekday) => {
     return !availableWeekDays.some(
       (availableWeekDay) => availableWeekDay.week_day === weekday,
     )
@@ -63,8 +62,8 @@ export default async function handle(
   `
 
   const blockedDates = blockedDatesRaw.map((item) => item.date)
-  
-  console.log(blockedDates);
-  
-  return res.json({blockedWeekDays, blockedDates})
+
+  console.log(blockedDates)
+
+  return res.json({ blockedWeekDays, blockedDates })
 }
