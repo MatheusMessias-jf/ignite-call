@@ -14,7 +14,7 @@ import { useQuery } from '@tanstack/react-query'
 
 interface Availability {
   possibleTimes: number[]
-  availableTimes: number[]
+  unavailableTimes: number[]
 }
 
 interface CalendaStepProps {
@@ -54,9 +54,9 @@ export function CalendarStep({ onSelectDateTime }: CalendaStepProps) {
     },
   )
 
-  const unavailableTimes = availability?.availableTimes.map(
-    (availableTime) => {
-      return dayjs(availableTime).get('hour')
+  const unavailableTimes = availability?.unavailableTimes.map(
+    (unavailableTime) => {
+      return dayjs(unavailableTime).get('hour')
     },
   )
 
@@ -84,7 +84,6 @@ export function CalendarStep({ onSelectDateTime }: CalendaStepProps) {
               return (
                 <TimePickerItem
                   key={hour}
-                  // disabled={!availability.availableTimes.includes(hour)} CÓDIGO ORIGINAL
                   disabled={unavailableTimes?.includes(hour) ||
                     dayjs(selectedDate).set('hour', hour).isBefore(new Date())}
                   onClick={() => handleSelectTime(hour)}
