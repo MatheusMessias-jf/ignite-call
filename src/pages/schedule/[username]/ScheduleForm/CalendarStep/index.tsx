@@ -54,6 +54,12 @@ export function CalendarStep({ onSelectDateTime }: CalendaStepProps) {
     },
   )
 
+  const unavailableTimes = availability?.availableTimes.map(
+    (availableTime) => {
+      return dayjs(availableTime).get('hour')
+    },
+  )
+
   function handleSelectTime(hour: number) {
     const dateWithTime = dayjs(selectedDate)
       .set('hour', hour)
@@ -78,7 +84,9 @@ export function CalendarStep({ onSelectDateTime }: CalendaStepProps) {
               return (
                 <TimePickerItem
                   key={hour}
-                  disabled={!availability.availableTimes.includes(hour)}
+                  // disabled={!availability.availableTimes.includes(hour)} CÓDIGO ORIGINAL
+                  disabled={unavailableTimes?.includes(hour) ||
+                    dayjs(selectedDate).set('hour', hour).isBefore(new Date())}
                   onClick={() => handleSelectTime(hour)}
                 >
                   {String(hour).padStart(2, '0')}:00h
